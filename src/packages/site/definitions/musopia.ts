@@ -1,28 +1,24 @@
-import type { ISiteMetadata, IUserInfo } from "../types";
-import NexusPHP, {
-  CategoryInclbookmarked,
-  CategoryIncldead,
-  CategorySpstate,
-  SchemaMetadata,
-} from "../schemas/NexusPHP";
-import { createDocument, parseSizeString } from "../utils";
+import type { ISiteMetadata } from "../types";
+import { CategoryInclbookmarked, CategoryIncldead, CategorySpstate, SchemaMetadata } from "../schemas/NexusPHP";
 
 export const siteMetadata: ISiteMetadata = {
   ...SchemaMetadata,
 
   version: 1,
-  id: "baozi",
-  name: "包子",
-  description: "包子PT。",
-  tags: ["综合"],
+  id: "musopia",
+  name: "音乐乌托邦",
+  description: "汇聚每一个人的影响力，让音乐流行起来吧！",
+  tags: ["音乐"],
   timezoneOffset: "+0800",
 
-  collaborator: ["liuyaowen"],
+  collaborator: ["bfjy"],
 
   type: "private",
   schema: "NexusPHP",
 
-  urls: ["uggcf://c.g-onbmv.pp/"],
+  favicon: "./_default_nexusphp.png",
+
+  urls: ["uggcf://jjj.zhfbcvn.ivc/", "uggcf://cg.kmg.zr/"],
 
   category: [
     {
@@ -33,44 +29,29 @@ export const siteMetadata: ISiteMetadata = {
         { value: 402, name: "电视剧" },
         { value: 403, name: "综艺" },
         { value: 404, name: "纪录片" },
-        { value: 405, name: "动漫" },
+        { value: 405, name: "动画" },
         { value: 406, name: "音乐视频" },
         { value: 407, name: "体育" },
-        { value: 408, name: "高品质音频" },
-        { value: 409, name: "音乐" },
+        { value: 408, name: "音频" },
+        { value: 409, name: "其他" },
       ],
       cross: { mode: "append" },
     },
     {
       name: "媒介",
       key: "medium",
-      options: [
-        { value: 1, name: "Blu-ray 原盘" },
-        { value: 2, name: "HD DVD" },
-        { value: 3, name: "Remux" },
-        { value: 4, name: "MiniBD" },
-        { value: 5, name: "HDTV" },
-        { value: 6, name: "DVDR" },
-        { value: 7, name: "Encode" },
-        { value: 8, name: "CD" },
-        { value: 9, name: "Track" },
-        { value: 10, name: "WEB-DL" },
-        { value: 11, name: "UHD Blu-ray 原盘" },
-        { value: 12, name: "UHD Blu-ray DIY" },
-        { value: 13, name: "Blu-ray DIY" },
-      ],
+      options: [{ value: 8, name: "CD" }],
       cross: { mode: "append" },
     },
     {
       name: "编码",
       key: "codec",
       options: [
-        { value: 1, name: "H.264(AVC)" },
+        { value: 1, name: "H.264" },
         { value: 2, name: "VC-1" },
-        { value: 3, name: "AV1" },
+        { value: 3, name: "Xvid" },
         { value: 4, name: "MPEG-2" },
         { value: 5, name: "Other" },
-        { value: 6, name: "H.265(HEVC)" },
       ],
       cross: { mode: "append" },
     },
@@ -82,9 +63,6 @@ export const siteMetadata: ISiteMetadata = {
         { value: 2, name: "1080i" },
         { value: 3, name: "720p" },
         { value: 4, name: "SD" },
-        { value: 5, name: "4K" },
-        { value: 6, name: "8K" },
-        { value: 7, name: "None" },
       ],
       cross: { mode: "append" },
     },
@@ -98,6 +76,7 @@ export const siteMetadata: ISiteMetadata = {
         { value: 4, name: "WiKi" },
         { value: 5, name: "Other" },
       ],
+      cross: { mode: "append" },
     },
     CategoryIncldead,
     CategorySpstate,
@@ -106,19 +85,8 @@ export const siteMetadata: ISiteMetadata = {
 
   userInfo: {
     ...SchemaMetadata.userInfo!,
-    pickLast: [], // clear id cache
     selectors: {
       ...SchemaMetadata.userInfo!.selectors!,
-      // "page": "/index.php",
-      id: {
-        selector: "#welcome_text > span.nowrap > a[href*='userdetails.php']",
-        attr: "href",
-        filters: [{ name: "querystring", args: ["id"] }],
-      },
-      name: {
-        selector: "#welcome_text > span.nowrap > a[href*='userdetails.php']",
-      },
-      // "page": "/userdetails.php?id=$user.id$",
       bonus: {
         selector: ["td.rowhead:contains('魔力值') + td", "td.rowhead:contains('Karma'):contains('Points') + td"],
         filters: [{ name: "parseNumber" }],
@@ -129,87 +97,90 @@ export const siteMetadata: ISiteMetadata = {
       bonusPerHourMultiplier: 1, // selector 已能正确选中加倍后的时魔
     },
   },
-
   levelRequirements: [
     {
       id: 1,
       name: "Peasant",
-      privilege:
-        "	被降级的用户，他们有30天时间来提升分享率，否则他们会被踢。不能发表趣味盒内容；不能申请友情链接；不能上传字幕。",
+      privilege: "被降级的用户，他们有30天时间来提升分享率，否则他们会被踢。不能申请友情链接；不能上传字幕。",
     },
     {
       id: 2,
       name: "User",
-      privilege: `新用户的默认级别。只能在每周六中午12点至每周日晚上11点59分发布种子。`,
+      privilege: "新用户的默认级别。可以发送邀请；可匿名发布; 可对候选投反对票; 可购买邀请。",
     },
     {
       id: 3,
       name: "Power User",
       interval: "P4W",
       downloaded: "50GB",
+      seedingBonus: 40000,
       ratio: 1.05,
-      privilege:
-        '得到一个邀请名额；可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为"强")； 可以删除自己上传的字幕。',
+      privilege: "可以请求续种；可使用个性条。分享率低于0.95，你将自动降级。",
     },
     {
       id: 4,
       name: "Elite User",
       interval: "P8W",
       downloaded: "120GB",
+      seedingBonus: 80000,
       ratio: 1.55,
-      privilege: "Elite User及以上用户封存账号后不会被删除。",
+      privilege: "Elite User及以上用户封存账号后不会被删除。分享率低于1.45，你将自动降级。",
     },
     {
       id: 5,
       name: "Crazy User",
       interval: "P15W",
       downloaded: "300GB",
+      seedingBonus: 150000,
       ratio: 2.05,
-      privilege: "得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式。",
+      privilege:
+        "可以查看用户列表；可以查看其它用户的种子历史(如果用户隐私等级未设置为强)。分享率低于1.95，你将自动降级。",
     },
     {
       id: 6,
       name: "Insane User",
       interval: "P25W",
       downloaded: "500GB",
+      seedingBonus: 250000,
       ratio: 2.55,
-      privilege: "可以查看普通日志。",
+      privilege: "可以查看普通日志。分享率低于2.45，你将自动降级。",
     },
     {
       id: 7,
       name: "Veteran User",
       interval: "P40W",
       downloaded: "750GB",
+      seedingBonus: 400000,
       ratio: 3.05,
-      isKept: true,
-      privilege: "得到三个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。",
+      privilege:
+        "可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。分享率低于2.95，你将自动降级。",
     },
     {
       id: 8,
       name: "Extreme User",
       interval: "P60W",
       downloaded: "1024GB",
+      seedingBonus: 600000,
       ratio: 3.55,
-      isKept: true,
-      privilege: "可以更新过期的外部信息；可以查看Extreme User论坛。",
+      privilege: "可以更新过期的外部信息；可以查看Extreme User论坛。分享率低于3.45，你将自动降级。",
     },
     {
       id: 9,
       name: "Ultimate User",
       interval: "P80W",
       downloaded: "1536GB",
+      seedingBonus: 800000,
       ratio: 4.05,
-      isKept: true,
-      privilege: "得到五个邀请名额。",
+      privilege: "同上。分享率低于3.95，你将自动降级。",
     },
     {
       id: 10,
       name: "Nexus Master",
       interval: "P100W",
       downloaded: "3072GB",
+      seedingBonus: 1000000,
       ratio: 4.55,
-      isKept: true,
-      privilege: "得到十个邀请名额。",
+      privilege: "同上。分享率低于4.45，你将自动降级。",
     },
     {
       id: 100,
@@ -256,36 +227,3 @@ export const siteMetadata: ISiteMetadata = {
     },
   ],
 };
-
-export default class BaoZi extends NexusPHP {
-  protected override async parseUserInfoForSeedingStatus(
-    flushUserInfo: Partial<IUserInfo>,
-  ): Promise<Partial<IUserInfo>> {
-    const userId = flushUserInfo.id as number;
-    const userSeedingRequestString = await this.requestUserSeedingPage(userId);
-
-    if (!userSeedingRequestString || !/<b>\d+<\/b>\s{0,3}(条记录|records|條記錄)/.test(userSeedingRequestString)) {
-      return super.parseUserInfoForSeedingStatus(flushUserInfo); // 回落到默认的处理
-    }
-
-    const userSeedingDocument = createDocument(userSeedingRequestString);
-
-    flushUserInfo.seeding = this.getFieldData(userSeedingDocument, {
-      selector: "b:eq(0)",
-      filters: [(x) => parseInt(x)],
-    });
-    flushUserInfo.seedingSize =
-      this.getFieldData(userSeedingDocument, {
-        selector: "b:eq(0)",
-        elementProcess: (el: Element) => {
-          const summaryText = el.closest("div")?.textContent ?? "";
-          const candidateText = (summaryText.split("|")[1] ?? summaryText).replace(/,/g, "");
-          const numberStartIndex = candidateText.search(/[\d.]/);
-          const sizeText = numberStartIndex >= 0 ? candidateText.slice(numberStartIndex).trim() : "";
-          return sizeText ? parseSizeString(sizeText) : 0;
-        },
-      }) ?? 0;
-
-    return flushUserInfo;
-  }
-}
